@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/mcollina/fast-write-atomic#readme",
   "devDependencies": {
+    "atomically": "^2.0.2",
     "fastbench": "^1.0.1",
     "graceful-fs": "^4.2.11",
     "husky": "^8.0.3",

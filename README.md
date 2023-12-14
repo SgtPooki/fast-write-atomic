@@ -35,10 +35,14 @@ writeFile('./hello', data, function (err) {
 Those benchmarks writes a 1 MB file a thousand times:
 
 ```
-benchWriteFileAtomic*1000: 9830.501ms
-benchFastWriteAtomic*1000: 8848.916ms
-benchWriteFileAtomic*1000: 9944.722ms
-benchFastWriteAtomic*1000: 8997.108ms
+benchWriteFileAtomic*1000: 10.960s
+benchFastWriteAtomic*1000: 10.100s
+benchStenoWrite*1000: 327.397ms
+benchAtomically*1000: 10.903s
+benchWriteFileAtomic*1000: 11.291s
+benchFastWriteAtomic*1000: 9.959s
+benchStenoWrite*1000: 386ms
+benchAtomically*1000: 11.961s
 ```
 
 ## License
