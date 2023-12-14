@@ -2,7 +2,7 @@
 
 const writeAtomic = require('..')
 const proxyquire = require('proxyquire')
-const { test, tearDown } = require('tap')
+const { test, teardown } = require('tap')
 const {
   readFile,
   unlink,
@@ -18,8 +18,8 @@ const { join } = require('path')
 
 const files = []
 
-tearDown(() => {
-  for (let dest of files) {
+teardown(() => {
+  for (const dest of files) {
     try {
       unlinkSync(dest)
     } catch (_) {
@@ -322,7 +322,7 @@ test('write 2000 files in parallel', (t) => {
   let total = 0
   t.plan(1)
 
-  for (var i = 0; i < MAX; i++) {
+  for (let i = 0; i < MAX; i++) {
     const dest = getDest()
     const content = Buffer.allocUnsafe(4096) // 4 KB
 

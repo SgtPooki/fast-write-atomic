@@ -3,7 +3,7 @@
 const { open, write, close, rename, fsync, unlink } = require('fs')
 const { join, dirname } = require('path')
 
-var counter = 0
+let counter = 0
 
 function cleanup (dest, err, cb) {
   unlink(dest, function () {
