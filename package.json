@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "standard | snazzy && tap test/*test.js",
-    "cov": "tap test/*test.js"
+    "cov": "tap test/*test.js",
+    "bench": "node bench.mjs"
   },
   "repository": {
     "type": "git",
