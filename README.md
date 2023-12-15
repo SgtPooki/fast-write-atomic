@@ -38,7 +38,7 @@ writeFile('./hello', data, function (err) {
 * Tasks missing in the final table do not support the content type.
 * Tasks showing `NaN` or `undefined` errored when attempting to write (content type likely not supported)
 
-Example output on my M1 MacBook Pro
+Example output on my M1 MacBook Pro after converting the CSV output to markdown using [tablesgenerator](https://www.tablesgenerator.com/markdown_tables):
 
 ### String
 
