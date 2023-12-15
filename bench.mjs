@@ -133,10 +133,10 @@ async function runSuiteForContent (contentType, content) {
   })
   if (!['Stream', 'AsyncIterable', 'AsyncGenerator', 'Iterable'].includes(contentType)) {
     // cannot run these tests for these types due to fatal and uncatchable errors
-    bench.add(`${contentType}: write-file-atomic`, async function () {
+    bench.add(`${contentType} - write-file-atomic`, async function () {
       await wfaPromisified(dest, content)
     })
-      .add(`${contentType}: fast-write-atomic`, async function () {
+      .add(`${contentType} - fast-write-atomic`, async function () {
         await fwaPromisified(dest, content)
       })
   }
@@ -144,14 +144,14 @@ async function runSuiteForContent (contentType, content) {
   if (contentType === 'Stream') {
     // We add specific tests in this block to avoid the branching logic on stream content type within each task
     bench
-      .add(`${contentType}: atomically`, async function () {
+      .add(`${contentType} - atomically`, async function () {
         await writeFile(dest, content())
       })
-      .add(`${contentType}: steno`, async function () {
+      .add(`${contentType} - steno`, async function () {
         const writer = new StenoWriter(dest)
         await writer.write(content())
       })
-      .add(`${contentType}: steno (cached writers)`, async function () {
+      .add(`${contentType} - steno (cached writers)`, async function () {
         let writer = writers.get(dest)
         if (writer == null) {
           writer = new StenoWriter(dest)
@@ -159,11 +159,11 @@ async function runSuiteForContent (contentType, content) {
         }
         await writer.write(content())
       })
-      .add(`${contentType}: @sgtpooki/steno-patched`, async function () {
+      .add(`${contentType} - @sgtpooki/steno-patched`, async function () {
         const writer = new PatchedStenoWriter(dest)
         await writer.write(content())
       })
-      .add(`${contentType}: @sgtpooki/steno-patched (cached writers)`, async function () {
+      .add(`${contentType} - @sgtpooki/steno-patched (cached writers)`, async function () {
         let writer = writers.get(dest)
         if (writer == null) {
           writer = new PatchedStenoWriter(dest)
@@ -173,14 +173,14 @@ async function runSuiteForContent (contentType, content) {
       })
   } else {
     bench
-      .add(`${contentType}: atomically`, async function () {
+      .add(`${contentType} - atomically`, async function () {
         await writeFile(dest, content)
       })
-      .add(`${contentType}: steno`, async function () {
+      .add(`${contentType} - steno`, async function () {
         const writer = new StenoWriter(dest)
         await writer.write(content)
       })
-      .add(`${contentType}: steno (cached writers)`, async function () {
+      .add(`${contentType} - steno (cached writers)`, async function () {
         let writer = writers.get(dest)
         if (writer == null) {
           writer = new StenoWriter(dest)
@@ -188,11 +188,11 @@ async function runSuiteForContent (contentType, content) {
         }
         await writer.write(content)
       })
-      .add(`${contentType}: @sgtpooki/steno-patched`, async function () {
+      .add(`${contentType} - @sgtpooki/steno-patched`, async function () {
         const writer = new PatchedStenoWriter(dest)
         await writer.write(content)
       })
-      .add(`${contentType}: @sgtpooki/steno-patched (cached writers)`, async function () {
+      .add(`${contentType} - @sgtpooki/steno-patched (cached writers)`, async function () {
         let writer = writers.get(dest)
         if (writer == null) {
           writer = new PatchedStenoWriter(dest)
@@ -204,13 +204,21 @@ async function runSuiteForContent (contentType, content) {
 
   try {
     await bench.run()
-    console.table(bench.table().map(({ 'Task Name': taskName, ...rest }) => {
+    const tableResults = bench.table().map(({ 'Task Name': taskName, ...rest }) => {
       const invalidWrite = invalidWritesMap.get(taskName)
       if (invalidWrite) {
         taskName = `${taskName} - INVALID`
       }
       return { 'Task Name': taskName, ...rest }
-    }))
+    })
+    console.table(tableResults)
+    // writes "csv" that is tab separated values for easy import into https://www.tablesgenerator.com/markdown_tables
+    const csvResults = tableResults.map(({ 'Task Name': taskName, 'ops/sec': ops, 'Average Time (ns)': avg, Margin, Samples }) => {
+      return [taskName, ops, avg, Margin, Samples].join('\t')
+    })
+    // add header row to CSV
+    const writer = new PatchedStenoWriter('./bench-results.csv', { flags: 'a' })
+    await writer.write(['Task Name\tops/sec\tAverage Time (ns)\tMargin\tSamples', ...csvResults].join('\n'))
   } catch (e) {
     console.error(e)
     process.exit(1)
@@ -218,6 +226,7 @@ async function runSuiteForContent (contentType, content) {
 }
 
 try {
+  await rm('./bench-results.csv', { force: true })
   for (const [contentType, content] of contentTypes) {
     console.log(`\nRunning suite for ${contentType} content`)
     await runSuiteForContent(contentType, content)
