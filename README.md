@@ -40,119 +40,108 @@ writeFile('./hello', data, function (err) {
 
 Example output on my M1 MacBook Pro
 
-```
-Running suite for string content
-┌─────────┬────────────────────────────────────────────────────┬─────────┬────────────────────┬──────────┬─────────┐
-│ (index) │                     Task Name                      │ ops/sec │ Average Time (ns)  │  Margin  │ Samples │
-├─────────┼────────────────────────────────────────────────────┼─────────┼────────────────────┼──────────┼─────────┤
-│    0    │            'string: write-file-atomic'             │  '98'   │ 10141127.130072564 │ '±0.98%' │  1000   │
-│    1    │            'string: fast-write-atomic'             │  '105'  │  9482647.12691307  │ '±1.05%' │  1000   │
-│    2    │                'string: atomically'                │  '97'   │ 10247388.864010572 │ '±1.03%' │  1000   │
-│    3    │                  'string: steno'                   │ '1,793' │ 557665.9199930727  │ '±2.05%' │  1000   │
-│    4    │          'string: steno (cached writers)'          │ '1,832' │ 545577.4789899588  │ '±4.83%' │  1000   │
-│    5    │         'string: @sgtpooki/steno-patched'          │ '1,844' │ 542128.9540454745  │ '±4.33%' │  1000   │
-│    6    │ 'string: @sgtpooki/steno-patched (cached writers)' │ '1,828' │ 546750.7128603756  │ '±4.10%' │  1000   │
-└─────────┴────────────────────────────────────────────────────┴─────────┴────────────────────┴──────────┴─────────┘
+### String
 
-Running suite for Buffer content
-┌─────────┬────────────────────────────────────────────────────┬─────────┬────────────────────┬──────────┬─────────┐
-│ (index) │                     Task Name                      │ ops/sec │ Average Time (ns)  │  Margin  │ Samples │
-├─────────┼────────────────────────────────────────────────────┼─────────┼────────────────────┼──────────┼─────────┤
-│    0    │            'Buffer: write-file-atomic'             │  '93'   │ 10647329.308964312 │ '±1.07%' │  1000   │
-│    1    │            'Buffer: fast-write-atomic'             │  '93'   │ 10724833.747904748 │ '±1.18%' │  1000   │
-│    2    │                'Buffer: atomically'                │  '103'  │ 9681722.464945167  │ '±1.19%' │  1000   │
-│    3    │                  'Buffer: steno'                   │ '2,957' │ 338130.2399970591  │ '±2.35%' │  1000   │
-│    4    │          'Buffer: steno (cached writers)'          │ '3,108' │  321667.986959219  │ '±8.57%' │  1000   │
-│    5    │         'Buffer: @sgtpooki/steno-patched'          │ '3,055' │ 327327.04797387123 │ '±8.35%' │  1000   │
-│    6    │ 'Buffer: @sgtpooki/steno-patched (cached writers)' │ '2,902' │ 344481.1870083213  │ '±8.96%' │  1000   │
-└─────────┴────────────────────────────────────────────────────┴─────────┴────────────────────┴──────────┴─────────┘
+| Task Name                                         | ops/sec | Average Time (ns)  | Margin | Samples |
+|---------------------------------------------------|---------|--------------------|--------|---------|
+| string - write-file-atomic                        | 104     | 9569456.648971885  | ±0.93% | 1000    |
+| string - fast-write-atomic                        | 100     | 9974691.528048366  | ±1.05% | 1000    |
+| string - atomically                               | 90      | 10993664.809025824 | ±1.21% | 1000    |
+| string - steno                                    | 1,720   | 581064.2120279372  | ±5.04% | 1000    |
+| string - steno (cached writers)                   | 1,856   | 538735.5449534953  | ±6.25% | 1000    |
+| string - @sgtpooki/steno-patched                  | 1,855   | 538935.3109970689  | ±5.96% | 1000    |
+| string - @sgtpooki/steno-patched (cached writers) | 1,839   | 543614.1699589789  | ±5.93% | 1000    |
 
-Running suite for Uint8Array content
-┌─────────┬────────────────────────────────────────────────────────┬─────────┬────────────────────┬──────────┬─────────┐
-│ (index) │                       Task Name                        │ ops/sec │ Average Time (ns)  │  Margin  │ Samples │
-├─────────┼────────────────────────────────────────────────────────┼─────────┼────────────────────┼──────────┼─────────┤
-│    0    │            'Uint8Array: write-file-atomic'             │  '93'   │ 10649403.379000723 │ '±1.23%' │  1000   │
-│    1    │            'Uint8Array: fast-write-atomic'             │  '93'   │ 10716505.24397567  │ '±1.36%' │  1000   │
-│    2    │                'Uint8Array: atomically'                │  '91'   │ 10982564.680039883 │ '±1.13%' │  1000   │
-│    3    │                  'Uint8Array: steno'                   │ '3,017' │ 331438.19296360016 │ '±2.56%' │  1000   │
-│    4    │          'Uint8Array: steno (cached writers)'          │ '3,029' │ 330061.0620751977  │ '±8.72%' │  1000   │
-│    5    │         'Uint8Array: @sgtpooki/steno-patched'          │ '3,039' │ 328965.3820358217  │ '±7.30%' │  1000   │
-│    6    │ 'Uint8Array: @sgtpooki/steno-patched (cached writers)' │ '3,048' │ 328013.7880370021  │ '±7.70%' │  1000   │
-└─────────┴────────────────────────────────────────────────────────┴─────────┴────────────────────┴──────────┴─────────┘
+### Buffer
 
-Running suite for Uint16Array content
-┌─────────┬─────────────────────────────────────────────────────────┬─────────┬────────────────────┬──────────┬─────────┐
-│ (index) │                        Task Name                        │ ops/sec │ Average Time (ns)  │  Margin  │ Samples │
-├─────────┼─────────────────────────────────────────────────────────┼─────────┼────────────────────┼──────────┼─────────┤
-│    0    │       'Uint16Array: write-file-atomic - INVALID'        │  '105'  │ 9483421.069014817  │ '±1.45%' │  1000   │
-│    1    │            'Uint16Array: fast-write-atomic'             │  '94'   │ 10553417.209014297 │ '±1.24%' │  1000   │
-│    2    │           'Uint16Array: atomically - INVALID'           │  '107'  │ 9343969.604857266  │ '±1.51%' │  1000   │
-│    3    │                  'Uint16Array: steno'                   │ '3,020' │ 331036.04197502136 │ '±1.43%' │  1000   │
-│    4    │          'Uint16Array: steno (cached writers)'          │ '3,067' │ 325985.72900146246 │ '±7.19%' │  1000   │
-│    5    │         'Uint16Array: @sgtpooki/steno-patched'          │ '3,053' │ 327543.77199709415 │ '±7.81%' │  1000   │
-│    6    │ 'Uint16Array: @sgtpooki/steno-patched (cached writers)' │ '3,133' │  319123.477011919  │ '±6.56%' │  1000   │
-└─────────┴─────────────────────────────────────────────────────────┴─────────┴────────────────────┴──────────┴─────────┘
+| Task Name                                         | ops/sec | Average Time (ns)  | Margin | Samples |
+|---------------------------------------------------|---------|--------------------|--------|---------|
+| Buffer - write-file-atomic                        | 106     | 9413316.115945578  | ±1.24% | 1000    |
+| Buffer - fast-write-atomic                        | 87      | 11396506.075043231 | ±1.39% | 1000    |
+| Buffer - atomically                               | 98      | 10167072.37899676  | ±1.60% | 1000    |
+| Buffer - steno                                    | 2,914   | 343070.8889402449  | ±6.03% | 1000    |
+| Buffer - steno (cached writers)                   | 2,735   | 365561.4319778979  | ±8.32% | 1000    |
+| Buffer - @sgtpooki/steno-patched                  | 2,927   | 341579.9469836056  | ±2.29% | 1000    |
+| Buffer - @sgtpooki/steno-patched (cached writers) | 2,974   | 336181.8239837885  | ±7.88% | 1000    |
 
-Running suite for Uint32Array content
-┌─────────┬─────────────────────────────────────────────────────────┬─────────┬────────────────────┬──────────┬─────────┐
-│ (index) │                        Task Name                        │ ops/sec │ Average Time (ns)  │  Margin  │ Samples │
-├─────────┼─────────────────────────────────────────────────────────┼─────────┼────────────────────┼──────────┼─────────┤
-│    0    │       'Uint32Array: write-file-atomic - INVALID'        │  '136'  │ 7311366.059925407  │ '±1.27%' │  1000   │
-│    1    │            'Uint32Array: fast-write-atomic'             │  '107'  │ 9304161.356981844  │ '±1.08%' │  1000   │
-│    2    │           'Uint32Array: atomically - INVALID'           │  '140'  │  7110223.74593094  │ '±1.16%' │  1000   │
-│    3    │                  'Uint32Array: steno'                   │ '3,144' │ 317998.45795333385 │ '±2.80%' │  1000   │
-│    4    │          'Uint32Array: steno (cached writers)'          │ '3,033' │ 329627.07901746035 │ '±7.60%' │  1000   │
-│    5    │         'Uint32Array: @sgtpooki/steno-patched'          │ '3,076' │ 325001.25800445676 │ '±8.09%' │  1000   │
-│    6    │ 'Uint32Array: @sgtpooki/steno-patched (cached writers)' │ '3,121' │ 320333.6189612746  │ '±7.38%' │  1000   │
-└─────────┴─────────────────────────────────────────────────────────┴─────────┴────────────────────┴──────────┴─────────┘
+### Uint8Array
 
-Running suite for DataView content
-┌─────────┬──────────────────────────────────────────────────────┬─────────┬────────────────────┬──────────┬─────────┐
-│ (index) │                      Task Name                       │ ops/sec │ Average Time (ns)  │  Margin  │ Samples │
-├─────────┼──────────────────────────────────────────────────────┼─────────┼────────────────────┼──────────┼─────────┤
-│    0    │            'DataView: write-file-atomic'             │  '92'   │ 10755427.586954087 │ '±1.19%' │  1000   │
-│    1    │            'DataView: fast-write-atomic'             │  '103'  │ 9682615.898888558  │ '±1.30%' │  1000   │
-│    2    │                'DataView: atomically'                │  '99'   │ 10038814.300976694 │ '±1.30%' │  1000   │
-│    3    │                  'DataView: steno'                   │ '3,006' │ 332660.66405922174 │ '±1.71%' │  1000   │
-│    4    │          'DataView: steno (cached writers)'          │ '3,114' │ 321063.73800709844 │ '±7.30%' │  1000   │
-│    5    │         'DataView: @sgtpooki/steno-patched'          │ '2,935' │ 340601.26296430826 │ '±5.38%' │  1000   │
-│    6    │ 'DataView: @sgtpooki/steno-patched (cached writers)' │ '2,658' │ 376117.6629848778  │ '±8.61%' │  1000   │
-└─────────┴──────────────────────────────────────────────────────┴─────────┴────────────────────┴──────────┴─────────┘
+| Task Name                                             | ops/sec | Average Time (ns)  | Margin | Samples |
+|-------------------------------------------------------|---------|--------------------|--------|---------|
+| Uint8Array - write-file-atomic                        | 101     | 9853620.467916131  | ±1.15% | 1000    |
+| Uint8Array - fast-write-atomic                        | 106     | 9421993.666924536  | ±1.30% | 1000    |
+| Uint8Array - atomically                               | 101     | 9857824.475903064  | ±1.16% | 1000    |
+| Uint8Array - steno                                    | 2,937   | 340472.6759530604  | ±4.23% | 1000    |
+| Uint8Array - steno (cached writers)                   | 3,037   | 329200.16099512577 | ±6.35% | 1000    |
+| Uint8Array - @sgtpooki/steno-patched                  | 2,940   | 340053.3969886601  | ±9.02% | 1000    |
+| Uint8Array - @sgtpooki/steno-patched (cached writers) | 2,566   | 389624.0490563214  | ±8.57% | 1000    |
 
-Running suite for Iterable content
-┌─────────┬──────────────────────────────────────────────────────┬─────────┬────────────────────┬───────────────┬───────────┐
-│ (index) │                      Task Name                       │ ops/sec │ Average Time (ns)  │    Margin     │  Samples  │
-├─────────┼──────────────────────────────────────────────────────┼─────────┼────────────────────┼───────────────┼───────────┤
-│    0    │           'Iterable: atomically - INVALID'           │  'NaN'  │        NaN         │ '±undefined%' │ undefined │
-│    1    │                  'Iterable: steno'                   │ '5,886' │ 169870.42497843504 │   '±1.38%'    │   1000    │
-│    2    │          'Iterable: steno (cached writers)'          │ '6,321' │ 158191.94603711367 │   '±1.18%'    │   1000    │
-│    3    │         'Iterable: @sgtpooki/steno-patched'          │ '6,250' │ 159984.88796502352 │   '±1.00%'    │   1000    │
-│    4    │ 'Iterable: @sgtpooki/steno-patched (cached writers)' │ '6,419' │ 155779.72603216767 │   '±0.96%'    │   1000    │
-└─────────┴──────────────────────────────────────────────────────┴─────────┴────────────────────┴───────────────┴───────────┘
+### Uint16Array
 
-Running suite for AsyncIterable content
-┌─────────┬───────────────────────────────────────────────────────────┬─────────┬────────────────────┬───────────────┬───────────┐
-│ (index) │                         Task Name                         │ ops/sec │ Average Time (ns)  │    Margin     │  Samples  │
-├─────────┼───────────────────────────────────────────────────────────┼─────────┼────────────────────┼───────────────┼───────────┤
-│    0    │           'AsyncIterable: atomically - INVALID'           │  'NaN'  │        NaN         │ '±undefined%' │ undefined │
-│    1    │                  'AsyncIterable: steno'                   │ '6,391' │ 156456.6680341959  │   '±0.99%'    │   1000    │
-│    2    │          'AsyncIterable: steno (cached writers)'          │ '6,478' │ 154359.0930737555  │   '±1.18%'    │   1000    │
-│    3    │         'AsyncIterable: @sgtpooki/steno-patched'          │ '6,487' │ 154149.9589793384  │   '±0.94%'    │   1000    │
-│    4    │ 'AsyncIterable: @sgtpooki/steno-patched (cached writers)' │ '6,408' │ 156052.87803336978 │   '±1.29%'    │   1000    │
-└─────────┴───────────────────────────────────────────────────────────┴─────────┴────────────────────┴───────────────┴───────────┘
+| Task Name                                              | ops/sec | Average Time (ns)  | Margin  | Samples |
+|--------------------------------------------------------|---------|--------------------|---------|---------|
+| Uint16Array - write-file-atomic - INVALID              | 106     | 9366256.469059736  | ±1.84%  | 1000    |
+| Uint16Array - fast-write-atomic                        | 105     | 9485154.04104814   | ±1.29%  | 1000    |
+| Uint16Array - atomically - INVALID                     | 105     | 9512628.273036331  | ±2.13%  | 1000    |
+| Uint16Array - steno                                    | 3,070   | 325627.6100054383  | ±4.11%  | 1000    |
+| Uint16Array - steno (cached writers)                   | 2,928   | 341501.7860159278  | ±10.23% | 1000    |
+| Uint16Array - @sgtpooki/steno-patched                  | 3,061   | 326585.48698946834 | ±8.27%  | 1000    |
+| Uint16Array - @sgtpooki/steno-patched (cached writers) | 2,984   | 335088.25398236513 | ±10.90% | 1000    |
 
-Running suite for Stream content
-┌─────────┬────────────────────────────────────────────────────┬─────────┬────────────────────┬───────────────┬───────────┐
-│ (index) │                     Task Name                      │ ops/sec │ Average Time (ns)  │    Margin     │  Samples  │
-├─────────┼────────────────────────────────────────────────────┼─────────┼────────────────────┼───────────────┼───────────┤
-│    0    │           'Stream: atomically - INVALID'           │  'NaN'  │        NaN         │ '±undefined%' │ undefined │
-│    1    │                  'Stream: steno'                   │ '2,658' │ 376147.6060375571  │   '±7.08%'    │   1000    │
-│    2    │          'Stream: steno (cached writers)'          │ '2,942' │  339895.16813308   │   '±6.85%'    │   1000    │
-│    3    │         'Stream: @sgtpooki/steno-patched'          │ '3,011' │ 332088.10099959373 │   '±8.45%'    │   1000    │
-│    4    │ 'Stream: @sgtpooki/steno-patched (cached writers)' │ '3,052' │ 327651.11902728677 │   '±6.76%'    │   1000    │
-└─────────┴────────────────────────────────────────────────────┴─────────┴────────────────────┴───────────────┴───────────┘
+### Uint32Array
 
-```
+| Task Name                                              | ops/sec | Average Time (ns)  | Margin | Samples |
+|--------------------------------------------------------|---------|--------------------|--------|---------|
+| Uint32Array - write-file-atomic - INVALID              | 137     | 7248817.8689703345 | ±1.13% | 1000    |
+| Uint32Array - fast-write-atomic                        | 99      | 10027958.324976265 | ±1.48% | 1000    |
+| Uint32Array - atomically - INVALID                     | 136     | 7339935.803066939  | ±1.78% | 1000    |
+| Uint32Array - steno                                    | 2,829   | 353382.5658969581  | ±5.97% | 1000    |
+| Uint32Array - steno (cached writers)                   | 3,047   | 328090.66795930266 | ±7.05% | 1000    |
+| Uint32Array - @sgtpooki/steno-patched                  | 3,229   | 309673.2000261545  | ±7.81% | 1000    |
+| Uint32Array - @sgtpooki/steno-patched (cached writers) | 3,038   | 329160.20902246237 | ±7.65% | 1000    |
+
+### DataView
+
+| Task Name                                           | ops/sec | Average Time (ns)  | Margin | Samples |
+|-----------------------------------------------------|---------|--------------------|--------|---------|
+| DataView - write-file-atomic                        | 99      | 10023608.434963971 | ±1.52% | 1000    |
+| DataView - fast-write-atomic                        | 104     | 9605465.122014284  | ±1.39% | 1000    |
+| DataView - atomically                               | 87      | 11452541.950047016 | ±1.18% | 1000    |
+| DataView - steno                                    | 3,113   | 321212.2639194131  | ±2.16% | 1000    |
+| DataView - steno (cached writers)                   | 3,282   | 304673.0729416013  | ±7.46% | 1000    |
+| DataView - @sgtpooki/steno-patched                  | 3,260   | 306680.9140481055  | ±7.47% | 1000    |
+| DataView - @sgtpooki/steno-patched (cached writers) | 2,952   | 338718.1470580399  | ±9.85% | 1000    |
+
+### Iterable
+
+| Task Name                                           | ops/sec | Average Time (ns)  | Margin      | Samples |
+|-----------------------------------------------------|---------|--------------------|-------------|---------|
+| Iterable - atomically - INVALID                     | NaN     | NaN                | ±undefined% |         |
+| Iterable - steno                                    | 6,335   | 157834.0379744768  | ±0.97%      | 1000    |
+| Iterable - steno (cached writers)                   | 6,539   | 152909.95298326015 | ±1.03%      | 1000    |
+| Iterable - @sgtpooki/steno-patched                  | 6,510   | 153586.5519978106  | ±0.89%      | 1000    |
+| Iterable - @sgtpooki/steno-patched (cached writers) | 6,791   | 147243.3290593326  | ±0.74%      | 1000    |
+
+### AsyncIterable
+
+| Task Name                                                | ops/sec | Average Time (ns)  | Margin      | Samples |
+|----------------------------------------------------------|---------|--------------------|-------------|---------|
+| AsyncIterable - atomically - INVALID                     | NaN     | NaN                | ±undefined% |         |
+| AsyncIterable - steno                                    | 6,248   | 160029.91100028157 | ±1.17%      | 1000    |
+| AsyncIterable - steno (cached writers)                   | 6,611   | 151245.8410039544  | ±0.85%      | 1000    |
+| AsyncIterable - @sgtpooki/steno-patched                  | 6,179   | 161817.61096417904 | ±1.15%      | 1000    |
+| AsyncIterable - @sgtpooki/steno-patched (cached writers) | 6,194   | 161436.42192333937 | ±1.26%      | 1000    |
+
+### Stream
+
+| Task Name                                         | ops/sec | Average Time (ns)  | Margin      | Samples |
+|---------------------------------------------------|---------|--------------------|-------------|---------|
+| Stream - atomically - INVALID                     | NaN     | NaN                | ±undefined% |         |
+| Stream - steno                                    | 2,795   | 357745.4889751971  | ±7.52%      | 1000    |
+| Stream - steno (cached writers)                   | 2,856   | 350058.62103030086 | ±6.54%      | 1000    |
+| Stream - @sgtpooki/steno-patched                  | 3,059   | 326857.8610792756  | ±6.98%      | 1000    |
+| Stream - @sgtpooki/steno-patched (cached writers) | 2,976   | 336011.23297587037 | ±6.76%      | 1000    |
+
 
 ## License
 

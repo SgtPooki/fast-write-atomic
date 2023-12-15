@@ -217,8 +217,8 @@ async function runSuiteForContent (contentType, content) {
       return [taskName, ops, avg, Margin, Samples].join('\t')
     })
     // add header row to CSV
-    const writer = new PatchedStenoWriter('./bench-results.csv', { flags: 'a' })
-    await writer.write(['Task Name\tops/sec\tAverage Time (ns)\tMargin\tSamples', ...csvResults].join('\n'))
+    const writer = new PatchedStenoWriter(`./bench-results-${contentType}.csv`)
+    await writer.write(['Task Name\tops/sec\tAverage Time (ns)\tMargin\tSamples', ...csvResults].join('\n') + '\n\n')
   } catch (e) {
     console.error(e)
     process.exit(1)
@@ -226,7 +226,6 @@ async function runSuiteForContent (contentType, content) {
 }
 
 try {
-  await rm('./bench-results.csv', { force: true })
   for (const [contentType, content] of contentTypes) {
     console.log(`\nRunning suite for ${contentType} content`)
     await runSuiteForContent(contentType, content)
