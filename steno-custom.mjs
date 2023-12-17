@@ -75,7 +75,9 @@ export class Writer {
     // File isn't locked, write data
     async #write(data) {
         // Lock file
+      if (!this.#locked) {
         await pRetry(() => this.#lockFile(), { retries: 1000 })
+      }
         try {
             // Atomic write
             await writeFile(this.#fd, data);
@@ -91,15 +93,15 @@ export class Writer {
         }
         finally {
             // Unlock file
-            await pRetry(() => this.#unlockFile(), { retries: 1000 })
-            // await backOff(() => this.#unlockFile(), { retries: 100 })
-            // this.#unlockFile()
             this.#prev = this.#next;
             this.#next = this.#nextPromise = null;
             if (this.#nextData !== null) {
                 const nextData = this.#nextData;
                 this.#nextData = null;
-                await this.write(nextData);
+                // try to write the next data before unlocking the file
+                await this.#write(nextData);
+            } else {
+              await pRetry(() => this.#unlockFile(), { retries: 1000 })
             }
         }
     }
