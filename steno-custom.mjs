@@ -34,21 +34,22 @@ export class Writer {
     }
 
     async #closeFd() {
-      await this.#fd.close()
+      await this.#fd.close();
+      this.#fd = null;
     }
 
     // create cross-process lock before writing to the file
     async #lockFile() {
-      // console.log('trying to lock file')
-        await new Promise((resolve, reject) => {
-          flock(this.#fd.fd, 'ex', (err) => {
-            if (err) {
-              reject(err)
-            } else {
-              resolve()
-            }
-          })
+      await this.#getFd();
+      await new Promise((resolve, reject) => {
+        flock(this.#fd.fd, 'ex', (err) => {
+          if (err) {
+            reject(err)
+          } else {
+            resolve()
+          }
         })
+      })
 
       this.#locked = true;
       // console.log('locked file')
@@ -111,7 +112,6 @@ export class Writer {
         this.write.bind(this);
     }
     async write(data) {
-      await this.#getFd();
       return this.#locked ?
         this.#add(data) :
         this.#write(data);
