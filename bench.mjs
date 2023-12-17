@@ -10,6 +10,7 @@ import { Bench } from 'tinybench'
 import { promisify } from 'node:util'
 import toBuffer from 'it-to-buffer'
 import { Readable } from 'stream'
+import { Writer as CustomStenoWriter } from './steno-custom.mjs'
 
 const wfaPromisified = promisify(writeFileAtomic)
 const fwaPromisified = promisify(fastWriteAtomic)
@@ -151,24 +152,12 @@ async function runSuiteForContent (contentType, content) {
         const writer = new StenoWriter(dest)
         await writer.write(content())
       })
-      .add(`${contentType} - steno (cached writers)`, async function () {
-        let writer = writers.get(dest)
-        if (writer == null) {
-          writer = new StenoWriter(dest)
-          writers.set(dest, writer)
-        }
-        await writer.write(content())
-      })
       .add(`${contentType} - @sgtpooki/steno-patched`, async function () {
         const writer = new PatchedStenoWriter(dest)
         await writer.write(content())
       })
-      .add(`${contentType} - @sgtpooki/steno-patched (cached writers)`, async function () {
-        let writer = writers.get(dest)
-        if (writer == null) {
-          writer = new PatchedStenoWriter(dest)
-          writers.set(dest, writer)
-        }
+      .add(`${contentType} - steno-custom.js`, async function () {
+        const writer = new CustomStenoWriter(dest)
         await writer.write(content())
       })
   } else {
@@ -180,24 +169,12 @@ async function runSuiteForContent (contentType, content) {
         const writer = new StenoWriter(dest)
         await writer.write(content)
       })
-      .add(`${contentType} - steno (cached writers)`, async function () {
-        let writer = writers.get(dest)
-        if (writer == null) {
-          writer = new StenoWriter(dest)
-          writers.set(dest, writer)
-        }
-        await writer.write(content)
-      })
       .add(`${contentType} - @sgtpooki/steno-patched`, async function () {
         const writer = new PatchedStenoWriter(dest)
         await writer.write(content)
       })
-      .add(`${contentType} - @sgtpooki/steno-patched (cached writers)`, async function () {
-        let writer = writers.get(dest)
-        if (writer == null) {
-          writer = new PatchedStenoWriter(dest)
-          writers.set(dest, writer)
-        }
+      .add(`${contentType} - steno-custom.js`, async function () {
+        const writer = new CustomStenoWriter(dest)
         await writer.write(content)
       })
   }
