@@ -113,7 +113,7 @@ async function runSuiteForContent (contentType, content) {
   let dest = join(folder, 'dest')
   const invalidWritesMap = new Map()
   const bench = new Bench({
-    warmupIterations: 10,
+    warmupIterations: 100,
     time: 1,
     iterations: 1000,
     setup: async () => {
@@ -140,14 +140,14 @@ async function runSuiteForContent (contentType, content) {
       .add(`${contentType} - fast-write-atomic`, async function () {
         await fwaPromisified(dest, content)
       })
+      .add(`${contentType} - atomically`, async function () {
+        await writeFile(dest, content)
+      })
   }
 
   if (contentType === 'Stream') {
     // We add specific tests in this block to avoid the branching logic on stream content type within each task
     bench
-      .add(`${contentType} - atomically`, async function () {
-        await writeFile(dest, content())
-      })
       .add(`${contentType} - steno`, async function () {
         const writer = new StenoWriter(dest)
         await writer.write(content())
@@ -162,9 +162,6 @@ async function runSuiteForContent (contentType, content) {
       })
   } else {
     bench
-      .add(`${contentType} - atomically`, async function () {
-        await writeFile(dest, content)
-      })
       .add(`${contentType} - steno`, async function () {
         const writer = new StenoWriter(dest)
         await writer.write(content)
